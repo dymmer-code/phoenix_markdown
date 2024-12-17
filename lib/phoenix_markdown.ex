@@ -1,7 +1,7 @@
 defmodule PhoenixMarkdown do
   @moduledoc """
 
-  A Markdown template engine for Phoenix. It also lets you (optionally) embed EEx tags to be evaulated on the server.
+  A Markdown template engine for Phoenix. It also lets you (optionally) embed EEx tags to be evaluated on the server.
 
   > Powered by [Earmark](https://github.com/pragdave/earmark)
 
@@ -57,7 +57,7 @@ defmodule PhoenixMarkdown do
 
   ## Optional Earmark Configuration
 
-  You can configure phoenix_markdown via two seperate configuration blocks.
+  You can configure phoenix_markdown via two separate configuration blocks.
 
   The first one is,
   literally, the options that will be passed to Earmark as it renders the markdown into html.
@@ -73,7 +73,7 @@ defmodule PhoenixMarkdown do
   the options that can go here.
 
   The Earmark options set here apply to all .md template files. If anybody has a good idea on how to pass
-  per-file options to a template complier, I'm open to suggestions.
+  per-file options to a template compiler, I'm open to suggestions.
 
   ## Optional Server Tags Configuration
 
@@ -100,7 +100,7 @@ defmodule PhoenixMarkdown do
   leaves the tags escaped in Markdown.
 
   * `:all` evaluates all server tags in all markdown files.
-  * `:only` Only files that match the pattern or patterns will be evaluated. 
+  * `:only` Only files that match the pattern or patterns will be evaluated.
     This pattern can be any of:
       * The name of the final html file: `"sample.html"`
       * The full path of the template file: `"lib/sample_web/templates/page/sample.html.md"`
@@ -140,5 +140,4 @@ defmodule PhoenixMarkdown do
   a file with the `.html.md` extension and drop it into the appropriate templates folder in your
   phoenix application. Then you can use it just like any other template.
   """
-
 end

@@ -20,7 +20,6 @@ defmodule PhoenixMarkdown.Mixfile do
           "Blog Post" => @blog_post
         }
       ],
-
       name: "phoenix_markdown",
       source_url: @github,
       docs: docs(),
@@ -31,20 +30,23 @@ defmodule PhoenixMarkdown.Mixfile do
   end
 
   def application do
-    [applications: [:phoenix]]
+    [extra_applications: [:logger]]
   end
 
   defp deps do
     [
       {:phoenix, ">= 1.1.0"},
       {:phoenix_html, ">= 2.3.0"},
-      {:earmark, "~> 1.2"},         # Markdown interpreter
+      {:phoenix_view, ">= 2.0.4"},
+      {:phoenix_html_helpers, ">= 1.0.1"},
+      # Markdown interpreter
+      {:earmark, "~> 1.2"},
       {:html_entities, "~> 0.4"},
 
       # Docs dependencies
       {:ex_doc, ">= 0.0.0", only: [:dev, :docs]},
       {:inch_ex, ">= 0.0.0", only: :docs},
-      {:credo, "~> 0.8.10", only: [:dev, :test], runtime: false}
+      {:credo, ">= 0.8.10", only: [:dev, :test], runtime: false}
     ]
   end
 
@@ -55,5 +57,4 @@ defmodule PhoenixMarkdown.Mixfile do
       main: "PhoenixMarkdown"
     ]
   end
-
 end

@@ -6,8 +6,12 @@ defmodule PhoenixMarkdown.EngineTest do
   # vanilla markdown
 
   test "compile a vanilla markdown template with smart tags turned off" do
-    Mix.Config.persist(phoenix_markdown: [earmark: %Earmark.Options{}])
-    Mix.Config.persist(phoenix_markdown: [server_tags: false])
+    Application.put_all_env(
+      phoenix_markdown: [
+        earmark: %Earmark.Options{},
+        server_tags: false
+      ]
+    )
 
     data =
       "test/fixtures/templates/view_test/my_app/page/sample.html.md"
@@ -48,6 +52,7 @@ defmodule PhoenixMarkdown.EngineTest do
 
   test "compile a vanilla markdown template with earmark options" do
     Mix.Config.persist(phoenix_markdown: [earmark: %Earmark.Options{gfm: true, breaks: true}])
+
     Mix.Config.persist(phoenix_markdown: [server_tags: false])
 
     data =
@@ -66,8 +71,12 @@ defmodule PhoenixMarkdown.EngineTest do
   end
 
   test "compile a vanilla markdown template with earmark options as a map" do
-    Mix.Config.persist(phoenix_markdown: [earmark: %{gfm: true, breaks: true}])
-    Mix.Config.persist(phoenix_markdown: [server_tags: false])
+    Application.put_all_env(
+      phoenix_markdown: [
+        earmark: %{gfm: true, breaks: true},
+        server_tags: false
+      ]
+    )
 
     data =
       "test/fixtures/templates/view_test/my_app/page/sample.html.md"
@@ -171,7 +180,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -185,26 +196,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 3],
                                        [
-                                         {:__aliases__, [line: 3, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 3, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 3], [{:other, [line: 3], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 3],
+                                      [
+                                        {:other, [line: 3], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -219,6 +238,7 @@ defmodule PhoenixMarkdown.EngineTest do
 
   test "compile a smart template with smart tags turned on with :all and no smartypants" do
     Mix.Config.persist(phoenix_markdown: [earmark: %Earmark.Options{smartypants: false}])
+
     Mix.Config.persist(phoenix_markdown: [server_tags: :all])
 
     data =
@@ -261,7 +281,10 @@ defmodule PhoenixMarkdown.EngineTest do
                                                           {:tmp2, [], Phoenix.HTML.Engine},
                                                           [
                                                             {:|, [],
-                                                             ["", "<h2>Smart</h2>\n<p>"]}
+                                                             [
+                                                               "",
+                                                               "<h2>Smart</h2>\n<p>"
+                                                             ]}
                                                           ]
                                                         ]},
                                                        {:+, [line: 2], [11, 1]},
@@ -283,19 +306,26 @@ defmodule PhoenixMarkdown.EngineTest do
                                                         {:->, [generated: true],
                                                          [
                                                            [
-                                                             safe: {:data, [generated: true],
-                                                              Phoenix.HTML.Engine}
+                                                             safe:
+                                                               {:data,
+                                                                [
+                                                                  generated: true
+                                                                ], Phoenix.HTML.Engine}
                                                            ],
-                                                           {:data, [generated: true],
-                                                            Phoenix.HTML.Engine}
+                                                           {:data, [generated: true], Phoenix.HTML.Engine}
                                                          ]},
                                                         {:->, [generated: true],
                                                          [
                                                            [
-                                                             {:when, [generated: true],
+                                                             {:when,
                                                               [
-                                                                {:bin, [generated: true],
-                                                                 Phoenix.HTML.Engine},
+                                                                generated: true
+                                                              ],
+                                                              [
+                                                                {:bin,
+                                                                 [
+                                                                   generated: true
+                                                                 ], Phoenix.HTML.Engine},
                                                                 {:is_binary,
                                                                  [
                                                                    generated: true,
@@ -303,8 +333,10 @@ defmodule PhoenixMarkdown.EngineTest do
                                                                    import: Kernel
                                                                  ],
                                                                  [
-                                                                   {:bin, [generated: true],
-                                                                    Phoenix.HTML.Engine}
+                                                                   {:bin,
+                                                                    [
+                                                                      generated: true
+                                                                    ], Phoenix.HTML.Engine}
                                                                  ]}
                                                               ]}
                                                            ],
@@ -318,26 +350,36 @@ defmodule PhoenixMarkdown.EngineTest do
                                                                :html_escape
                                                              ]}, [generated: true],
                                                             [
-                                                              {:bin, [generated: true],
-                                                               Phoenix.HTML.Engine}
+                                                              {:bin,
+                                                               [
+                                                                 generated: true
+                                                               ], Phoenix.HTML.Engine}
                                                             ]}
                                                          ]},
                                                         {:->, [generated: true],
                                                          [
                                                            [
-                                                             {:other, [generated: true],
-                                                              Phoenix.HTML.Engine}
+                                                             {:other,
+                                                              [
+                                                                generated: true
+                                                              ], Phoenix.HTML.Engine}
                                                            ],
                                                            {{:., [line: 3],
                                                              [
                                                                {:__aliases__,
-                                                                [line: 3, alias: false],
-                                                                [:Phoenix, :HTML, :Safe]},
+                                                                [
+                                                                  line: 3,
+                                                                  alias: false
+                                                                ],
+                                                                [
+                                                                  :Phoenix,
+                                                                  :HTML,
+                                                                  :Safe
+                                                                ]},
                                                                :to_iodata
                                                              ]}, [line: 3],
                                                             [
-                                                              {:other, [line: 3],
-                                                               Phoenix.HTML.Engine}
+                                                              {:other, [line: 3], Phoenix.HTML.Engine}
                                                             ]}
                                                          ]}
                                                       ]
@@ -362,7 +404,6 @@ defmodule PhoenixMarkdown.EngineTest do
                    "\n<% \"baz\" %>\n\nfin</p>\n"
                  ]}
               ]}
-
   end
 
   test "compile a smart template with smart tags turned on with :all and percent-encoded tags" do
@@ -393,7 +434,10 @@ defmodule PhoenixMarkdown.EngineTest do
                                     {:tmp2, [], Phoenix.HTML.Engine},
                                     [
                                       {:|, [],
-                                       ["", "<h2>Smart Enough For Links</h2>\n<p><a href=\""]}
+                                       [
+                                         "",
+                                         "<h2>Smart Enough For Links</h2>\n<p><a href=\""
+                                       ]}
                                     ]
                                   ]},
                                  "foo",
@@ -460,7 +504,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -474,26 +520,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 3],
                                        [
-                                         {:__aliases__, [line: 3, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 3, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 3], [{:other, [line: 3], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 3],
+                                      [
+                                        {:other, [line: 3], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -519,7 +573,10 @@ defmodule PhoenixMarkdown.EngineTest do
                    {:__block__, [],
                     [
                       {:=, [],
-                       [{:tmp1, [], Phoenix.HTML.Engine}, [{:|, [], ["", "<h2>Smart</h2>\n<p>"]}]]},
+                       [
+                         {:tmp1, [], Phoenix.HTML.Engine},
+                         [{:|, [], ["", "<h2>Smart</h2>\n<p>"]}]
+                       ]},
                       [
                         {:|, [],
                          [
@@ -531,7 +588,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -545,26 +604,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 2],
                                        [
-                                         {:__aliases__, [line: 2, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 2, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 2], [{:other, [line: 2], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 2],
+                                      [
+                                        {:other, [line: 2], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -582,7 +649,11 @@ defmodule PhoenixMarkdown.EngineTest do
       "test/fixtures/templates/view_test/my_app/smart/smart_sample.html.md"
       |> Engine.compile("smart_sample.html")
 
-    assert data == {:safe, [{:|, [], ["", "<h2>Smart</h2>\n<p>&lt;%= 11 + 2 %&gt;\nfin</p>\n"]}]}
+    assert data ==
+             {:safe,
+              [
+                {:|, [], ["", "<h2>Smart</h2>\n<p>&lt;%= 11 + 2 %&gt;\nfin</p>\n"]}
+              ]}
   end
 
   test "compile a smart template with smart tags turned on with :only - full path match" do
@@ -591,7 +662,10 @@ defmodule PhoenixMarkdown.EngineTest do
     Mix.Config.persist(
       phoenix_markdown: [
         server_tags:
-          {:only, ["test/fixtures/templates/view_test/my_app/smart/smart_sample.html.md"]}
+          {:only,
+           [
+             "test/fixtures/templates/view_test/my_app/smart/smart_sample.html.md"
+           ]}
       ]
     )
 
@@ -607,7 +681,10 @@ defmodule PhoenixMarkdown.EngineTest do
                    {:__block__, [],
                     [
                       {:=, [],
-                       [{:tmp1, [], Phoenix.HTML.Engine}, [{:|, [], ["", "<h2>Smart</h2>\n<p>"]}]]},
+                       [
+                         {:tmp1, [], Phoenix.HTML.Engine},
+                         [{:|, [], ["", "<h2>Smart</h2>\n<p>"]}]
+                       ]},
                       [
                         {:|, [],
                          [
@@ -619,7 +696,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -633,26 +712,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 2],
                                        [
-                                         {:__aliases__, [line: 2, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 2, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 2], [{:other, [line: 2], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 2],
+                                      [
+                                        {:other, [line: 2], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -667,7 +754,10 @@ defmodule PhoenixMarkdown.EngineTest do
     Mix.Config.persist(
       phoenix_markdown: [
         server_tags:
-          {:only, ["test/fixtures/templates/view_test/my_app/page/smart_sample.html.md"]}
+          {:only,
+           [
+             "test/fixtures/templates/view_test/my_app/page/smart_sample.html.md"
+           ]}
       ]
     )
 
@@ -675,7 +765,11 @@ defmodule PhoenixMarkdown.EngineTest do
       "test/fixtures/templates/view_test/my_app/smart/smart_sample.html.md"
       |> Engine.compile("smart_sample.html")
 
-    assert data == {:safe, [{:|, [], ["", "<h2>Smart</h2>\n<p>&lt;%= 11 + 2 %&gt;\nfin</p>\n"]}]}
+    assert data ==
+             {:safe,
+              [
+                {:|, [], ["", "<h2>Smart</h2>\n<p>&lt;%= 11 + 2 %&gt;\nfin</p>\n"]}
+              ]}
   end
 
   test "compile a smart template with smart tags turned on with :only - wildcard path match" do
@@ -699,7 +793,10 @@ defmodule PhoenixMarkdown.EngineTest do
                    {:__block__, [],
                     [
                       {:=, [],
-                       [{:tmp1, [], Phoenix.HTML.Engine}, [{:|, [], ["", "<h2>Smart</h2>\n<p>"]}]]},
+                       [
+                         {:tmp1, [], Phoenix.HTML.Engine},
+                         [{:|, [], ["", "<h2>Smart</h2>\n<p>"]}]
+                       ]},
                       [
                         {:|, [],
                          [
@@ -711,7 +808,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -725,26 +824,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 2],
                                        [
-                                         {:__aliases__, [line: 2, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 2, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 2], [{:other, [line: 2], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 2],
+                                      [
+                                        {:other, [line: 2], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -802,7 +909,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -816,26 +925,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 2],
                                        [
-                                         {:__aliases__, [line: 2, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 2, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 2], [{:other, [line: 2], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 2],
+                                      [
+                                        {:other, [line: 2], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -851,7 +968,11 @@ defmodule PhoenixMarkdown.EngineTest do
       "test/fixtures/templates/view_test/my_app/smart/smart_sample.html.md"
       |> Engine.compile("smart_sample.html")
 
-    assert data == {:safe, [{:|, [], ["", "<h2>Smart</h2>\n<p>&lt;%= 11 + 2 %&gt;\nfin</p>\n"]}]}
+    assert data ==
+             {:safe,
+              [
+                {:|, [], ["", "<h2>Smart</h2>\n<p>&lt;%= 11 + 2 %&gt;\nfin</p>\n"]}
+              ]}
   end
 
   test "compile a smart template with smart tags turned on with :only - bad value should crash" do
@@ -870,6 +991,7 @@ defmodule PhoenixMarkdown.EngineTest do
 
   test "compile a smart template with smart tags turned on with :except against the name" do
     Mix.Config.persist(phoenix_markdown: [earmark: %Earmark.Options{}])
+
     Mix.Config.persist(phoenix_markdown: [server_tags: {:except, ["smart_sample.html"]}])
 
     data =
@@ -946,7 +1068,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -960,26 +1084,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 3],
                                        [
-                                         {:__aliases__, [line: 3, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 3, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 3], [{:other, [line: 3], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 3],
+                                      [
+                                        {:other, [line: 3], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -998,7 +1130,10 @@ defmodule PhoenixMarkdown.EngineTest do
     Mix.Config.persist(
       phoenix_markdown: [
         server_tags:
-          {:except, ["test/fixtures/templates/view_test/my_app/page/smart_sample.html.md"]}
+          {:except,
+           [
+             "test/fixtures/templates/view_test/my_app/page/smart_sample.html.md"
+           ]}
       ]
     )
 
@@ -1064,7 +1199,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -1078,26 +1215,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 3],
                                        [
-                                         {:__aliases__, [line: 3, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 3, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 3], [{:other, [line: 3], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 3],
+                                      [
+                                        {:other, [line: 3], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -1181,7 +1326,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -1195,26 +1342,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 3],
                                        [
-                                         {:__aliases__, [line: 3, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 3, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 3], [{:other, [line: 3], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 3],
+                                      [
+                                        {:other, [line: 3], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -1229,6 +1384,7 @@ defmodule PhoenixMarkdown.EngineTest do
 
   test "compile a smart template with smart tags turned on with :except - regex path match" do
     Mix.Config.persist(phoenix_markdown: [earmark: %Earmark.Options{}])
+
     Mix.Config.persist(phoenix_markdown: [server_tags: {:except, [~r/.+my_app.+/]}])
 
     data =
@@ -1289,7 +1445,9 @@ defmodule PhoenixMarkdown.EngineTest do
                                 do: [
                                   {:->, [generated: true],
                                    [
-                                     [safe: {:data, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       safe: {:data, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {:data, [generated: true], Phoenix.HTML.Engine}
                                    ]},
                                   {:->, [generated: true],
@@ -1303,26 +1461,34 @@ defmodule PhoenixMarkdown.EngineTest do
                                              generated: true,
                                              context: Phoenix.HTML.Engine,
                                              import: Kernel
-                                           ], [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                           ],
+                                           [
+                                             {:bin, [generated: true], Phoenix.HTML.Engine}
+                                           ]}
                                         ]}
                                      ],
                                      {{:., [generated: true],
                                        [
-                                         {:__aliases__, [generated: true, alias: false],
-                                          [:Plug, :HTML]},
+                                         {:__aliases__, [generated: true, alias: false], [:Plug, :HTML]},
                                          :html_escape
                                        ]}, [generated: true],
-                                      [{:bin, [generated: true], Phoenix.HTML.Engine}]}
+                                      [
+                                        {:bin, [generated: true], Phoenix.HTML.Engine}
+                                      ]}
                                    ]},
                                   {:->, [generated: true],
                                    [
-                                     [{:other, [generated: true], Phoenix.HTML.Engine}],
+                                     [
+                                       {:other, [generated: true], Phoenix.HTML.Engine}
+                                     ],
                                      {{:., [line: 3],
                                        [
-                                         {:__aliases__, [line: 3, alias: false],
-                                          [:Phoenix, :HTML, :Safe]},
+                                         {:__aliases__, [line: 3, alias: false], [:Phoenix, :HTML, :Safe]},
                                          :to_iodata
-                                       ]}, [line: 3], [{:other, [line: 3], Phoenix.HTML.Engine}]}
+                                       ]}, [line: 3],
+                                      [
+                                        {:other, [line: 3], Phoenix.HTML.Engine}
+                                      ]}
                                    ]}
                                 ]
                               ]
@@ -1337,6 +1503,7 @@ defmodule PhoenixMarkdown.EngineTest do
 
   test "compile a smart template with smart tags turned on with :except - bad value should crash" do
     Mix.Config.persist(phoenix_markdown: [earmark: %Earmark.Options{}])
+
     Mix.Config.persist(phoenix_markdown: [server_tags: {:except, [:bad_value]}])
 
     assert_raise ArgumentError, fn ->

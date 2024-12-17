@@ -5,13 +5,15 @@ defmodule PhoenixMarkdown.ViewTest do
   defmodule MyApp.PageView do
     Mix.Config.persist(phoenix_markdown: [server_tags: nil])
     use Phoenix.View, root: "test/fixtures/templates"
-    use Phoenix.HTML
+    import Phoenix.HTML
+    use PhoenixHTMLHelpers
   end
 
   defmodule MyApp.SmartView do
     Mix.Config.persist(phoenix_markdown: [server_tags: :all])
     use Phoenix.View, root: "test/fixtures/templates"
-    use Phoenix.HTML
+    import Phoenix.HTML
+    use PhoenixHTMLHelpers
   end
 
   # --------------------------------------------------------
@@ -42,12 +44,18 @@ defmodule PhoenixMarkdown.ViewTest do
     html = View.render(MyApp.SmartView, "sample.html", [])
 
     assert html ==
-             {:safe, ["" | "<h2>Sample <em>template</em> <strong>in</strong> Markdown</h2>\n"]}
+             {:safe,
+              [
+                ""
+                | "<h2>Sample <em>template</em> <strong>in</strong> Markdown</h2>\n"
+              ]}
   end
 
   test "render a smart markdown template with smart tags on" do
     html = View.render(MyApp.SmartView, "smart_sample.html", [])
-    assert html == {:safe, [[["" | "<h2>Smart</h2>\n<p>"] | "13"] | "\nfin</p>\n"]}
+
+    assert html ==
+             {:safe, [[["" | "<h2>Smart</h2>\n<p>"] | "13"] | "\nfin</p>\n"]}
   end
 
   test "render a regular eex template with smart tags on" do
